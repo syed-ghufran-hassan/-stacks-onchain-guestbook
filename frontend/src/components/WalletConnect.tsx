@@ -69,17 +69,36 @@ export function WalletConnect() {
   const [connecting, setConnecting] = useState(false);
 
   const handleConnect = async () => {
-    setConnecting(true);
-    try {
-      const response = await connect();
-      const addr = getResponseStxAddress(response.addresses);
-      setAddress(addr);
-    } catch (e) {
-      console.error('[scaffold-stacks] connection failed:', e);
-    } finally {
-      setConnecting(false);
+  setConnecting(true);
+  try {
+    // Inside Xverse's in-app browser, use its provider directly.
+    const injected =
+      (window as any).XverseProviders?.StacksProvider ??
+      (window as any).StacksProvider;
+
+    if (injected && typeof injected.request === "function") {
+      const response = await injected.request("getAddresses", {});
+      const addresses = response?.result?.addresses ?? [];
+      const addr =
+        addresses.find((a: any) => a.symbol === "STX")?.address ??
+        addresses[0]?.address ??
+        null;
+      if (addr) {
+        setAddress(addr);
+        return;
+      }
     }
-  };
+
+    // Fallback: normal @stacks/connect flow for desktop extensions
+    const response = await connect();
+    const addr = getResponseStxAddress(response.addresses);
+    setAddress(addr);
+  } catch (e) {
+    console.error("[scaffold-stacks] connection failed:", e);
+  } finally {
+    setConnecting(false);
+  }
+};
 
   const handleDisconnect = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
