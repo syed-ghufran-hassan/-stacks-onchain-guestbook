@@ -41,11 +41,11 @@ No database. No backend. Everything lives on Bitcoin-secured Stacks.
 
 | Field | Value |
 | --- | --- |
-| **Frontend (Vercel)** | https://your-vercel-url.vercel.app |
+| **Frontend (Vercel)** | https://stacks-onchain-guestbook-spjn.vercel.app/ |
 | **Contract (Testnet)** | `ST1RDEMSE8XWD013B34N22PWQPVYTESFP9H0RB2G6.guestbook` |
 | **Explorer** | [View on Hiro Explorer](https://explorer.hiro.so/address/ST1RDEMSE8XWD013B34N22PWQPVYTESFP9H0RB2G6?chain=testnet) |
 
-> Replace the Vercel URL after deployment.
+ 
 
 ---
 
