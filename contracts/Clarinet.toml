@@ -10,7 +10,7 @@ requirements = []
 passes = ["check_checker"]
 check_checker = { trusted_sender = false, trusted_caller = false, callee_filter = false }
 
-[contracts.counter]
-path = "contracts/counter.clar"
-clarity_version = 6
-epoch = "4.0"
+[contracts.guestbook]
+path = "contracts/guestbook.clar"
+clarity_version = 3
+epoch = "latest"
