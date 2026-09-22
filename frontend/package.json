@@ -9,14 +9,18 @@
     "test": "node ./node_modules/vitest/vitest.mjs run --passWithNoTests"
   },
   "dependencies": {
-    "@stacks/connect": "^8",
-    "@stacks/network": "^7",
-    "@stacks/transactions": "^7",
+    "@scure/bip32": "^2.4.0",
+    "@scure/bip39": "^2.4.0",
+    "@stacks/common": "^7.6.0",
+    "@stacks/connect": "^8.2.7",
+    "@stacks/network": "^7.6.0",
+    "@stacks/transactions": "^7.6.0",
     "jotai": "^2.19.0",
     "next": "^15",
     "pino-pretty": "^11",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "regenerator-runtime": "^0.14.1"
   },
   "devDependencies": {
     "@stacks/clarinet-sdk": "3.21.0",

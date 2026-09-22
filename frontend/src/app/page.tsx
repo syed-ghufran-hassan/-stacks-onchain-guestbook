@@ -10,7 +10,6 @@ import {
   uintCV,
 } from "@stacks/transactions";
 import { addressAtom } from "../store/wallet";
- 
 
 const CONTRACT_ADDRESS = "ST1RDEMSE8XWD013B34N22PWQPVYTESFP9H0RB2G6";
 const CONTRACT_NAME = "guestbook";
