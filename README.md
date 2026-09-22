@@ -18,6 +18,7 @@ Built for the **Scaffold Stacks test-flight bounty** — 20 developers putting S
 - [Usage](#usage)
 - [Deployment](#deployment)
 - [Feedback — Scaffold Stacks Experience](#feedback--scaffold-stacks-experience)
+- [Known Issues](#known-issues)
 - [Security Note](#security-note)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
@@ -41,7 +42,7 @@ No database. No backend. Everything lives on Bitcoin-secured Stacks.
 
 | Field | Value |
 | --- | --- |
-| **Frontend (Vercel)** | https://stacks-onchain-guestbook-spjn.vercel.app/ |
+| **Frontend (Vercel)** | https://stacks-onchain-guestbook-hoflw2188-syedghufranhassans-projects.vercel.app/ |
 | **Contract (Testnet)** | `ST1RDEMSE8XWD013B34N22PWQPVYTESFP9H0RB2G6.guestbook` |
 | **Explorer** | [View on Hiro Explorer](https://explorer.hiro.so/address/ST1RDEMSE8XWD013B34N22PWQPVYTESFP9H0RB2G6?chain=testnet) |
 
@@ -146,6 +147,8 @@ Every message is a real transaction. Refresh the page and the data is still ther
 - [Clarinet](https://github.com/hirosystems/clarinet) 3.23+
 - A Stacks wallet — [Leather](https://leather.io/) or [Xverse](https://www.xverse.app/) — set to **Testnet**
 
+> The frontend depends on `@stacks/connect@8`, `@stacks/transactions@7`, and `@stacks/network@7`. If you see "not exported" errors, run `rm -rf node_modules package-lock.json && npm install` to reset.
+
 ### 1. Clone the repo
 
 ```bash
@@ -236,19 +239,29 @@ Notes from building this dApp with Scaffold Stacks, for the bounty's test-flight
 ### What worked well
 
 - **Project scaffolding** — `stacksdapp new` gives you a working contract + frontend in one command. Way faster than wiring Clarinet and Next.js together manually.
-- **Contract compilation** — Clarinet's error messages are precise. When I used the outdated `block-height` keyword, the error pointed directly to the fix (`stacks-block-height` for Clarity 3).
+- **Contract compilation & error messages** — Clarinet's errors are precise. When I used the outdated `block-height` keyword, it pointed directly to `stacks-block-height` for Clarity 3 — exactly what a good compiler error should do.
 - **Wallet integration** — `@stacks/connect` handles Leather and Xverse out of the box. Connection state syncing into Jotai atoms is a clean pattern.
 - **Deployment** — Once the deployment plan format was corrected, `clarinet deployments apply --testnet` was seamless.
+ 
 
 ### What could be improved
 
 - **Deployment plan format mismatch** — `stacksdapp deploy` expected an older flat `transaction-type` field, but Clarinet generated the newer nested `contract-publish` structure. This cost significant debugging time. Either `stacksdapp` should track the Clarinet plan format, or the docs should warn about the version mismatch.
 - **Mobile testing friction** — Testing against a mobile wallet requires HTTPS. `http://192.168.x.x` is silently rejected by Xverse's in-app browser. A documented ngrok workflow (or built-in dev HTTPS) would help.
 - **Firefox wallet support** — Neither Leather nor Xverse ships in the Firefox Add-ons store anymore. Firefox-first devs are stuck installing from source.
+- **`@stacks` package version conflicts** — Scaffold Stacks ships with `@stacks/connect` v7/v8 (which uses the SIP-030 `request()` API), but Clarinet's generated tooling and some examples still assume the v6 `showConnect`/`openContractCall` API. Mixing major versions of `@stacks/connect`, `@stacks/network`, and `@stacks/transactions` produces confusing errors (`request function is not implemented`, `StacksTestnet is not exported`, `privateKeyToAddress is not exported`). A version matrix in the Scaffold Stacks docs would save hours of trial-and-error.
 
 ### Time to ship
 
-Approximately **X hours**, including environment setup, contract iteration, and frontend wiring.
+Approximately **12 hours**, including environment setup, contract iteration, and frontend wiring.
+
+---
+
+## Known Issues
+
+- Wallet connection requires an up-to-date Leather or Xverse extension. Older versions don't implement the SIP-030 `request()` method and will fail with `request function is not implemented`.
+- Mobile testing requires HTTPS. `http://192.168.x.x` is silently rejected by Xverse's in-app browser — use ngrok or deploy to Vercel first.
+- Firefox does not currently have Leather or Xverse in its Add-ons store. Use Chrome, Brave, or Edge for development.
 
 ---
 
