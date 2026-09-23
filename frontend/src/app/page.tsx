@@ -36,7 +36,7 @@ export default function GuestbookPage() {
         functionArgs: [],
         senderAddress: CONTRACT_ADDRESS,
       });
-      const total = Number(cvToJSON(result).value.value);
+      const total = Number(cvToJSON(result).value);
       setCount(total);
       return total;
     } catch (err) {
@@ -57,7 +57,7 @@ export default function GuestbookPage() {
       });
       const json = cvToJSON(result);
       if (!json.value) return null;
-      const v = json.value.value;
+      const v = json.value.value ?? json.value;
       return {
         id,
         author: v.author.value,
